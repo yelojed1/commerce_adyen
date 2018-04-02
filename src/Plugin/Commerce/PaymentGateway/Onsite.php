@@ -47,7 +47,14 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
    */
   public function defaultConfiguration() {
     return [
-      'api_key' => '',
+      'merchant_account' => '',
+      'client_user' => '',
+      'client_password' => '',
+      'skin_code' => '',
+      'hmac' => '',
+      'shopper_locale' => '',
+      'recurring' => '',
+      'settings' => '',
     ] + parent::defaultConfiguration();
   }
 
@@ -57,17 +64,44 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildConfigurationForm($form, $form_state);
 
-    // Example credential. Also needs matching schema in
-    // config/schema/$your_module.schema.yml.
-    $form['api_key'] = [
+    $form['merchant_account'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('API key'),
-      '#default_value' => $this->configuration['api_key'],
+      '#title' => $this->t('Merchant Account'),
+      '#default_value' => $this->configuration['merchant_account'],
+      '#required' => TRUE,
+    ];
+
+    $form['client_user'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Client User'),
+      '#default_value' => $this->configuration['client_user'],
+      '#required' => TRUE,
+    ];
+
+    $form['client_password'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Client Password'),
+      '#default_value' => $this->configuration['client_password'],
+      '#required' => TRUE,
+    ];
+
+    $form['skin_code'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Skin Code'),
+      '#default_value' => $this->configuration['skin_code'],
+      '#required' => TRUE,
+    ];
+
+    $form['hmac'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('HMAC Key'),
+      '#default_value' => $this->configuration['hmac'],
       '#required' => TRUE,
     ];
 
     return $form;
   }
+
 
   /**
    * {@inheritdoc}
@@ -77,7 +111,11 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
 
     if (!$form_state->getErrors()) {
       $values = $form_state->getValue($form['#parents']);
-      $this->configuration['api_key'] = $values['api_key'];
+      $this->configuration['merchant_account'] = $values['merchant_account'];
+      $this->configuration['client_user'] = $values['client_user'];
+      $this->configuration['client_password'] = $values['client_password'];
+      $this->configuration['skin_code'] = $values['skin_code'];
+      $this->configuration['hmac'] = $values['hmac'];
     }
   }
 
