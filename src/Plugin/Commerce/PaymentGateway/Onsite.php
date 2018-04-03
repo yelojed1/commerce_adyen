@@ -164,7 +164,8 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
       '#type' => 'vertical_tabs',
     ];
 
-    foreach ($payment_types as $payment_type => $data) {
+    $types = [];
+    /*foreach ($payment_types as $payment_type => $data) {
       $config_form = commerce_adyen_invoke_controller('payment', $payment_type, $settings, $payment_types)->configForm();
 
       if (!empty($config_form)) {
@@ -176,7 +177,7 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
 
       // Form a list of payment types and their labels.                                                                            
       $types[$payment_type] = $data['label'];
-    }
+    }*/
 
     $form['default_payment_type'] = [
       '#type' => 'select',
