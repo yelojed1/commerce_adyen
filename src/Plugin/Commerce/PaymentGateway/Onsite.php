@@ -54,6 +54,9 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
       'hmac' => '',
       'shopper_locale' => '',
       'recurring' => '',
+      'state' => '',
+      'default_payment_type' => '',
+      'use_checkout_form' => '',
       'settings' => '',
     ] + parent::defaultConfiguration();
   }
@@ -141,17 +144,18 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
       '#type' => 'select',
       '#title' => t('Recurring contract'),
       '#empty_option' => t('Do not used'),
+      '#default_value' => $this->configuration['recurring'],
       '#options' => [
-        Contract::ONECLICK => t('One click'),
-        Contract::RECURRING => t('Recurring'),
-        Contract::ONECLICK_RECURRING => t('One click, recurring'),
+        'ONECLICK' => t('One click'),
+        'RECURRING' => t('Recurring'),
+        'ONECLICK,RECURRING' => t('One click, recurring'),
       ],
     ];
 
     $form['state'] = [
       '#type' => 'select',
       '#title' => t('Fields state'),
-      '#default_value' => 0,
+      '#default_value' => $this->configuration['state'],
       '#description' => t('State of fields on Adyen HPP.'),
       '#options' => [
         t('Fields are visible and modifiable'),
@@ -165,7 +169,8 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
     ];
 
     $types = [];
-    /*foreach ($payment_types as $payment_type => $data) {
+    //TODO Upgrade this code.
+    foreach ($payment_types as $payment_type => $data) {
       $config_form = commerce_adyen_invoke_controller('payment', $payment_type, $settings, $payment_types)->configForm();
 
       if (!empty($config_form)) {
@@ -177,12 +182,13 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
 
       // Form a list of payment types and their labels.                                                                            
       $types[$payment_type] = $data['label'];
-    }*/
+    }
 
     $form['default_payment_type'] = [
       '#type' => 'select',
       '#title' => t('Default payment type'),
       '#options' => $types,
+      '#default_value' => $this->configuration['default_payment_type'],
       '#disabled' => empty($types),
       '#description' => t('Selected payment type will be set as default extender for the payment request. This value can be changed during checkout process.'),
       '#empty_option' => t('- None -'),
@@ -190,6 +196,7 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
 
     $form['use_checkout_form'] = [
       '#type' => 'checkbox',
+      '#default_value' => $this->configuration['use_checkout_form'],
       '#title' => t('Use checkout forms'),
       '#disabled' => empty($payment_types),
       '#description' => t('Allow to use checkout forms for filing additional data for the payment type.'),

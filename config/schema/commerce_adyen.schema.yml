@@ -16,6 +16,21 @@ commerce_payment.commerce_payment_gateway.plugin.adyen_onsite:
     hmac:
       type: string
       label: 'HMAC key'
+    shopper_locale:
+      type: string
+      label: 'Shopper locale'
+    recurring:
+      type: string
+      label: 'Recurring'
+    state:
+      type: string
+      label: 'State'
+    default_payment_type:
+      type: string
+      label: 'Default payment type'
+    use_checkout_form:
+      type: string
+      label: 'Use checkout form'
 commerce_payment.commerce_payment_gateway.plugin.adyen_offsite_redirect:
   type: commerce_payment_gateway_configuration
   mapping:
