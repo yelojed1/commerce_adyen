@@ -219,6 +219,11 @@ class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
       $this->configuration['client_password'] = $values['client_password'];
       $this->configuration['skin_code'] = $values['skin_code'];
       $this->configuration['hmac'] = $values['hmac'];
+      $this->configuration['shopper_locale'] = $values['shopper_locale'];
+      $this->configuration['recurring'] = $values['recurring'];
+      $this->configuration['states'] = $values['states'];
+      $this->configuration['default_payment_type'] = $values['default_payment_type'];
+      $this->configuration['use_checkout_form'] = $values['use_checkout_form'];
     }
   }
 
