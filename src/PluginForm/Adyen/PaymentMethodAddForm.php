@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\commerce_adyen\PluginForm\Onsite;
+namespace Drupal\commerce_adyen\PluginForm\Adyen;
 
 use Drupal\commerce_payment\PluginForm\PaymentMethodAddForm as BasePaymentMethodAddForm;
 use Drupal\Core\Form\FormStateInterface;
