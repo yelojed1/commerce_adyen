@@ -8,14 +8,14 @@ use Drupal\commerce_payment\Entity\PaymentMethodInterface;
 use Drupal\commerce_payment\Exception\HardDeclineException;
 use Drupal\commerce_payment\PaymentMethodTypeManager;
 use Drupal\commerce_payment\PaymentTypeManager;
-use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\AdyenPaymentGatewayBase;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\OnsitePaymentGatewayBase;
 use Drupal\commerce_price\Price;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides the Adyen payment gateway.
+ * Provides the On-site payment gateway.
  *
  * @CommercePaymentGateway(
  *   id = "adyen_onsite",
@@ -30,7 +30,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   },
  * )
  */
-class Adyen extends AdyenPaymentGatewayBase implements OnsiteInterface {
+class Onsite extends OnsitePaymentGatewayBase implements OnsiteInterface {
 
   /**
    * {@inheritdoc}
@@ -235,6 +235,14 @@ class Adyen extends AdyenPaymentGatewayBase implements OnsiteInterface {
     $payment_method = $payment->getPaymentMethod();
     $this->assertPaymentMethod($payment_method);
 
+    // Add a built in test for testing decline exceptions.
+    /** @var \Drupal\address\Plugin\Field\FieldType\AddressItem $billing_address */
+    if ($billing_address = $payment_method->getBillingProfile()) {
+      $billing_address = $payment_method->getBillingProfile()->get('address')->first();
+      if ($billing_address->getPostalCode() == '53140') {
+        throw new HardDeclineException('The payment was declined');
+      }
+    }
 
     // Perform the create payment request here, throw an exception if it fails.
     // See \Drupal\commerce_payment\Exception for the available exceptions.
